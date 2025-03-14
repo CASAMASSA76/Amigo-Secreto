@@ -1,11 +1,123 @@
-<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>  JUEGO del AMIGO SECRETO  </title>
+    <title>Amigo Secreto</title>
+    <style>
+        body {
+            font-family: Algerian, sans-serif;
+            text-align: center;
+            margin: 70px;
+            background-color: #87CEEB;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            background-color: #87CEEB;
+            margin: 5px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        button {
+            margin-top: 10px;
+            padding: 10px;
+            border: 3px solid white;
+            background-color: #28a745;
+            color: white;
+            cursor: pointer;
+            border-radius: 10px;
+            font-size: 25px;
+            font-family: "Arial", serif;
+        }
+        input {
+            margin-top: 10px;
+            padding: 10px;
+            border: 5px solid black;
+            background-color: #28a745;
+            color: white;
+            border-radius: 10px;
+            font-size: 25px;
+            font-family: "Arial", serif;
+            width: 300px;
+        }
+        button:hover {
+            background-color: #218838;
+	}
+	input::placeholder {
+            color: white;
+	 }
+        h1 {
+            color: red;
+        }
+        .resultado {
+            color: red;
+        }
+    </style>
 </head>
 <body>
+    <h1><u>JUEGO del AMIGO SECRETO</u></h1>
+    <input type="text" id="nombre" placeholder="INGRESA un NOMBRE">
+    <button id="adicionar">ADICIONAR</button>
+    <ul id="lista"></ul>
+    <button id="sortear">SORTEAR AMIGO</button>
+    <button id="reiniciar">Reiniciar Juego</button>
+    <h2 id="resultado" class="resultado"></h2>
     
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const inputNombre = document.getElementById("nombre");
+            const btnAdicionar = document.getElementById("adicionar");
+            const btnSortear = document.getElementById("sortear");
+            const btnReiniciar = document.getElementById("reiniciar");
+            const listaNombres = document.getElementById("lista");
+            const resultado = document.getElementById("resultado");
+            
+            let nombres = [];
+    
+            btnAdicionar.addEventListener("click", function () {
+                const nombre = inputNombre.value.trim();
+                const regex = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ]+(?: [a-zA-ZáéíóúÁÉÍÓÚñÑ]+)*$/;
+                if (nombre === ""
+|| !regex.test(nombre)) {
+                    alert("Por favor, ingresa un nombre válido (solo letras y espacios).");
+                    inputNombre.value = "";
+		    return;
+                }
+                nombres.push(nombre);
+                actualizarLista();
+                inputNombre.value = "";
+            });
+    
+            btnSortear.addEventListener("click", function () {
+                if (nombres.length === 0) {
+                    alert("La lista está vacía. Agrega nombres antes de sortear.");
+                    return;
+                }
+                const indiceAleatorio = Math.floor(Math.random() * nombres.length);
+                resultado.innerHTML = `<span style="color: red;">El amigo secreto es:</span> ${nombres[indiceAleatorio]}`;
+            });
+
+            btnReiniciar.addEventListener("click", function () {
+                reiniciarJuego();
+            });
+    
+            function actualizarLista() {
+                listaNombres.innerHTML = "";
+                nombres.forEach(nombre => {
+                    const li = document.createElement("li");
+                    li.textContent = nombre;
+                    listaNombres.appendChild(li);
+                });
+            }
+            
+            function reiniciarJuego() {
+                nombres = [];
+                actualizarLista();
+                resultado.textContent = "";
+            }
+        });
+    </script>
 </body>
 </html>
